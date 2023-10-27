@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+# https://medium.com/@adamsokode/dockerize-django-application-with-nginx-reverse-proxy-79036606fa5
+  nginx:
+    build: ./nginx
+    volumes:
+      - ./static:/home/app/static
+    ports:
+      - 8000:80
+    depends_on:
+      - web
+    restart: "on-failure"
+
+
+  web:
+    build: .
+    command: sh -c "python manage.py makemigrations &&
+                    python manage.py migrate &&
+                    python manage.py collectstatic --no-input &&
+                    gunicorn medwings.wsgi:application --bind 0.0.0.0:8000"
+    volumes:
+      - .:/home/app 
+      - ./static:/home/app/static
+  
+      
+volumes:
+  static_volume:
+
+

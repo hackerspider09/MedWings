@@ -20,10 +20,16 @@ from rest_framework import routers
 from .views import *
 
 router = routers.DefaultRouter()
+router.register(r'signup', SignupViewSet)
+router.register(r'getmedicine', ProductViewSet)
 router.register(r'getmedicine/(?P<category>[-\w]+)', AllMedicineViewSet)
+
+router.register(r'getorders', GetAllOrderViewset)
+router.register(r'getitemsinorder/(?P<orderid>[-\w]+)', GetItemsInOrderViewset)
 router.register(r'setPrescriptionOrder', SetOrderByModel)
 # router.register(r'getcompany', AllPharmaCompanyViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
+    path('api/confirm/',ConfirmOrder.as_view(),name="order confirm"),
 ]

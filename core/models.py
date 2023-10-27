@@ -97,32 +97,5 @@ class PrescriptedOrder(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     total_price = models.DecimalField(max_digits=10,decimal_places=2,default=0) 
 
-
     
-    def save(self, *args, **kwargs):
-        
-        try:
-            print(kwargs)
-            print("33333333333",self.medicine.id)
-            medicineQuery = Medicine.objects.get(id=self.medicine.id)
-            orderQuery = Order.objects.get(id=self.orderId.id)
-            print("444444444444444444")
-            # self.total_price = self.quantity * Medicine.objects.get(id=self.medicine__id).price
-            if self.quantity <= medicineQuery.quantity:
-                print("5555555555")
-            # Calculate the total price
-                self.total_price += self.quantity * medicineQuery.price
-                medicineQuery.quantity -= self.quantity
-
-                orderQuery.total_price += self.total_price
-                orderQuery.save()
-                medicineQuery.save()
-                print("69696969")
-                super().save(*args, **kwargs)
-            else:
-                raise Exception("The specified quantity is not available.")
-   
-        except Exception as e:
-            print("errororoer",str(e))
-            raise Exception("server erro")
             
